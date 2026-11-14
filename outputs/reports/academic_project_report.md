@@ -8,7 +8,6 @@
 - **Amrutha** (Terrain Analysis & Hazard Assessment Engineer)
 - **Chaitra B** (A* Pathfinding Algorithms & Autonomous Route Planning Specialist)
 
-**Institution**: Jawaharlal Nehru National College of Engineering (JNNCE)  
 **Domain**: Planetary Science, Geospatial Information Systems (GIS), Robotics Autonomous Navigation  
 **Target Study Area**: Jezero Crater, Mars ($18.38^\circ\text{ N}, 77.58^\circ\text{ E}$)
 

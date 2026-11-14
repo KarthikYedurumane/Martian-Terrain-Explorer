@@ -98,8 +98,7 @@ http://127.0.0.1:5000
 
 ## 5. Team HexaTechForce: Work Distribution
 
-**Team Name**: **HexaTechForce**  
-**Institution**: Jawaharlal Nehru National College of Engineering (JNNCE)
+**Team Name**: **HexaTechForce**
 
 | Member | Assigned Role | Primary Responsibilities |
 | :--- | :--- | :--- |

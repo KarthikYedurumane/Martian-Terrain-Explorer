@@ -101,7 +101,7 @@ def create_report():
 
     # Team & Metadata Block
     doc.add_paragraph()
-    team_table = doc.add_table(rows=8, cols=2)
+    team_table = doc.add_table(rows=7, cols=2)
     team_table.alignment = WD_TABLE_ALIGNMENT.CENTER
     
     # Header row for Team
@@ -118,13 +118,12 @@ def create_report():
     rh2.font.color.rgb = RGBColor(255, 255, 255)
 
     team_members_data = [
-        ("Karthik Y P", "Project Lead, Full-Stack Integration & Architecture (karthikyp@jnnce.ac.in)"),
+        ("Karthik Y P", "Project Lead, System Architect & Full-Stack Integration"),
         ("Deekshith S Kuppal", "NASA Data Collection, GIS Preprocessing & Binary Georeferencing"),
         ("Amay Dinesh", "Frontend & UI/UX Designer, Mission HUD Cockpit Styling"),
         ("Ichith M", "Interactive WebGIS & Multi-Layer Raster Integration (Leaflet.js)"),
         ("Amrutha", "Terrain Analysis & Rover Hazard Assessment Engineering"),
-        ("Chaitra B", "A* Pathfinding Algorithms & Autonomous Route Planning Specialist"),
-        ("Institution", "Jawaharlal Nehru National College of Engineering (JNNCE)")
+        ("Chaitra B", "A* Pathfinding Algorithms & Autonomous Route Planning Specialist")
     ]
 
     for idx, (m_name, m_role) in enumerate(team_members_data, start=1):
