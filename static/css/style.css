@@ -1,0 +1,820 @@
+/* ==========================================================================
+   Martian Terrain Explorer - Aerospace Scientific Styling
+   NASA Space Apps Challenge 2026
+   ========================================================================== */
+
+:root {
+    --bg-space: #070a13;
+    --bg-card: #0f172a;
+    --bg-card-sub: #1e293b;
+    --border-color: #334155;
+    --border-active: #e06c4b;
+    
+    --mars-orange: #ff643d;
+    --mars-amber: #f59e0b;
+    --cyan-accent: #06b6d4;
+    --green-safe: #10b981;
+    --yellow-caution: #f59e0b;
+    --red-hazard: #ef4444;
+    --purple-dem: #8b5cf6;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    --font-heading: 'Orbitron', -apple-system, sans-serif;
+    --font-ui: 'Rajdhani', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.mars-theme {
+    background-color: var(--bg-space);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-space);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--mars-orange);
+}
+
+/* ==========================================================================
+   Header Styling
+   ========================================================================== */
+.mission-header {
+    background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
+    border-bottom: 1px solid var(--border-color);
+    height: 60px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.header-branding {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nasa-insignia {
+    background: linear-gradient(135deg, #0b3d91, #1d4ed8);
+    border: 1px solid #3b82f6;
+    padding: 4px 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+.insignia-text {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #ffffff;
+}
+
+.header-titles .project-title {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--text-primary);
+}
+
+.header-titles .project-tagline {
+    font-size: 12px;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.header-telemetry {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.telemetry-badge {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-color);
+    padding: 4px 12px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.telemetry-badge .badge-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.telemetry-badge .badge-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.telemetry-badge .badge-val.highlight {
+    color: var(--mars-orange);
+}
+
+.telemetry-badge.status-live {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--green-safe);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--green-safe);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+
+/* ==========================================================================
+   Main Workspace Layout
+   ========================================================================== */
+.dashboard-container {
+    flex: 1;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar-panel {
+    width: 380px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 500;
+    overflow-y: auto;
+}
+
+.sidebar-tabs {
+    display: flex;
+    background: #090e1a;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 6px;
+    color: var(--text-secondary);
+    font-family: var(--font-heading);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.tab-btn.active {
+    color: var(--mars-orange);
+    border-bottom: 2px solid var(--mars-orange);
+    background: rgba(255, 100, 61, 0.05);
+}
+
+.tab-content {
+    display: none;
+    padding: 16px;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+.panel-section {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 14px;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--mars-orange);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.section-title .icon {
+    width: 16px;
+    height: 16px;
+}
+
+.section-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   Layer Controls
+   ========================================================================== */
+.layer-control-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.layer-item {
+    background: var(--bg-card-sub);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.layer-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.layer-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.layer-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.layer-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.layer-slider-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.layer-slider-wrap input[type="range"] {
+    width: 70%;
+    accent-color: var(--mars-orange);
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 2px;
+    outline: none;
+}
+
+/* Switch Styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--border-color);
+    transition: .3s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--mars-orange);
+}
+
+input:checked + .slider:before {
+    transform: translateX(16px);
+}
+
+/* Landmark Teleport Buttons */
+.landmark-quick-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.btn-teleport {
+    background: var(--bg-card-sub);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: var(--font-ui);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.btn-teleport:hover {
+    color: var(--text-primary);
+    border-color: var(--cyan-accent);
+    background: rgba(6, 182, 212, 0.1);
+}
+
+/* Hazard Distribution Bar */
+.hazard-stat-bar {
+    height: 8px;
+    background: #090e1a;
+    border-radius: 4px;
+    display: flex;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.bar-seg.safe { background: var(--green-safe); }
+.bar-seg.caution { background: var(--yellow-caution); }
+.bar-seg.high { background: var(--red-hazard); }
+
+.hazard-legend-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.leg-item { display: flex; align-items: center; gap: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot.safe { background: var(--green-safe); }
+.dot.caution { background: var(--yellow-caution); }
+.dot.high { background: var(--red-hazard); }
+
+/* ==========================================================================
+   Routing Panel
+   ========================================================================== */
+.routing-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.point-input-group {
+    background: var(--bg-card-sub);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.point-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.marker-chip {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+}
+.marker-chip.start { background: var(--green-safe); }
+.marker-chip.dest { background: var(--red-hazard); }
+
+.coord-display {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-primary);
+    background: #090e1a;
+    padding: 6px 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.routing-presets {
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.preset-label {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.routing-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Button Variants */
+.btn {
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-primary {
+    flex: 1;
+    background: linear-gradient(135deg, #ff643d, #ea580c);
+    color: #fff;
+    padding: 10px 14px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 15px rgba(255, 100, 61, 0.3);
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #ff7b57, #f97316);
+    box-shadow: 0 0 20px rgba(255, 100, 61, 0.5);
+}
+
+.btn-secondary {
+    background: var(--bg-card-sub);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 10px 14px;
+    font-size: 12px;
+}
+.btn-secondary:hover {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+.btn-outline {
+    background: none;
+    border: 1px dashed var(--border-color);
+    color: var(--cyan-accent);
+    padding: 6px 10px;
+    font-size: 11px;
+    text-align: left;
+    justify-content: flex-start;
+}
+.btn-outline:hover {
+    border-color: var(--cyan-accent);
+    background: rgba(6, 182, 212, 0.08);
+}
+
+.btn-sm { padding: 6px 10px; font-size: 11px; }
+.btn-xs { font-size: 10px; }
+.btn-icon { width: 14px; height: 14px; }
+
+/* Telemetry Grid */
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.telemetry-cell {
+    background: #090e1a;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.telemetry-cell .t-label {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.telemetry-cell .t-val {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+.telemetry-cell .t-val.warning { color: var(--red-hazard); }
+
+.result-badge-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.badge {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid var(--green-safe);
+    color: var(--green-safe);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+}
+.badge-neutral {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+.chart-container {
+    background: #090e1a;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+}
+
+.chart-legend .leg-key {
+    margin-left: 8px;
+    font-size: 10px;
+}
+.chart-legend .leg-key.astar { color: var(--mars-orange); }
+.chart-legend .leg-key.straight { color: var(--text-muted); }
+
+.scientific-disclaimer {
+    font-size: 10px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    border-left: 2px solid var(--mars-amber);
+    padding-left: 8px;
+}
+
+/* ==========================================================================
+   Inspector & Metadata Styling
+   ========================================================================== */
+.inspector-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.inspect-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 12px;
+}
+
+.inspect-row.block {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.inspect-row .i-label { color: var(--text-secondary); }
+.inspect-row .i-val { font-weight: 600; color: var(--text-primary); }
+.inspect-row .i-val.mono { font-family: var(--font-mono); }
+.inspect-row .i-val.highlight { color: var(--mars-orange); font-size: 14px; }
+
+.inspect-row .i-text {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.hazard-badge {
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 11px;
+}
+.hazard-badge.safe { background: rgba(16, 185, 129, 0.2); color: var(--green-safe); border: 1px solid var(--green-safe); }
+.hazard-badge.caution { background: rgba(245, 158, 11, 0.2); color: var(--yellow-caution); border: 1px solid var(--yellow-caution); }
+.hazard-badge.high { background: rgba(239, 68, 68, 0.2); color: var(--red-hazard); border: 1px solid var(--red-hazard); }
+
+.metadata-table {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 11px;
+}
+
+.m-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.m-key { color: var(--text-muted); }
+.m-val { color: var(--text-primary); font-weight: 600; text-align: right; }
+.m-val.mono { font-family: var(--font-mono); }
+.m-val.highlight { color: var(--mars-orange); }
+
+/* ==========================================================================
+   Map Viewport & Overlays
+   ========================================================================== */
+.map-viewport {
+    flex: 1;
+    position: relative;
+    background: #000;
+}
+
+#mars-map {
+    width: 100%;
+    height: 100%;
+    background: #05070d;
+}
+
+/* Coordinates HUD */
+.map-overlay-hud {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 16px;
+    display: flex;
+    gap: 16px;
+    z-index: 800;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hud-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.hud-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.hud-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan-accent);
+}
+.hud-val.mono { font-family: var(--font-mono); }
+
+/* Legend Overlay */
+.map-legend-card {
+    position: absolute;
+    bottom: 25px;
+    right: 15px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 12px 14px;
+    z-index: 800;
+    width: 220px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.legend-header {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--mars-orange);
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 4px;
+}
+
+.leg-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.leg-title {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.leg-entry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.color-box {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+.color-box.safe { background: var(--green-safe); }
+.color-box.caution { background: var(--yellow-caution); }
+.color-box.high { background: var(--red-hazard); }
+
+.elev-gradient-bar {
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #3b0764, #1d4ed8, #059669, #eab308, #dc2626);
+    margin-top: 4px;
+}
+
+.elev-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* Custom Leaflet Tooltips & Markers */
+.leaflet-popup-content-wrapper {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.6) !important;
+}
+.leaflet-popup-tip {
+    background: var(--bg-card) !important;
+}
+.leaflet-container {
+    background: #070a13 !important;
+}

@@ -1,0 +1,7 @@
+# Martian Terrain Explorer - Requirements
+# NASA Space Apps Challenge 2026
+
+Flask>=3.0.0
+numpy>=2.0.0
+Pillow>=10.0.0
+tifffile>=2024.0.0

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Martian Terrain Explorer | NASA Space Apps Challenge 2026</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="mars-theme">
+
+    <!-- Top Mission Control Navigation Bar -->
+    <header class="mission-header">
+        <div class="header-branding">
+            <div class="nasa-insignia">
+                <span class="insignia-text">NASA</span>
+            </div>
+            <div class="header-titles">
+                <h1 class="project-title">MARTIAN TERRAIN EXPLORER</h1>
+                <p class="project-tagline">Interactive Mars Mapping, Hazard Assessment & Safe Route Planning System &bull; Space Apps 2026</p>
+            </div>
+        </div>
+        
+        <div class="header-telemetry">
+            <div class="telemetry-badge">
+                <span class="badge-label">STUDY AREA</span>
+                <span class="badge-val">JEZERO CRATER, MARS</span>
+            </div>
+            <div class="telemetry-badge">
+                <span class="badge-label">BASE DATASET</span>
+                <span class="badge-val highlight">MRO CTX (6.0 m/px)</span>
+            </div>
+            <div class="telemetry-badge">
+                <span class="badge-label">ELEVATION DATUM</span>
+                <span class="badge-val">MOLA / HRSC REF</span>
+            </div>
+            <div class="telemetry-badge status-live">
+                <span class="pulse-dot"></span>
+                <span class="badge-val">SYSTEM READY</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="dashboard-container">
+        
+        <!-- Left HUD Sidebar -->
+        <aside class="sidebar-panel">
+            
+            <!-- Tab Navigation -->
+            <div class="sidebar-tabs">
+                <button class="tab-btn active" data-tab="tab-layers">LAYERS</button>
+                <button class="tab-btn" data-tab="tab-routing">ROUTE PLANNER</button>
+                <button class="tab-btn" data-tab="tab-inspect">INSPECTOR</button>
+                <button class="tab-btn" data-tab="tab-metadata">DATASET</button>
+            </div>
+
+            <!-- Tab 1: Layer Management & Controls -->
+            <section id="tab-layers" class="tab-content active">
+                <div class="panel-section">
+                    <h3 class="section-title">
+                        <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,16L19.36,10.27L21,9L12,2L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,21.07L21,14.07L19.37,12.8M12,18.54L19.37,12.8"/></svg>
+                        Scientific Data Layers
+                    </h3>
+                    <p class="section-desc">Toggle optical satellite mosaic and derived geospatial models.</p>
+
+                    <div class="layer-control-list">
+                        <!-- Layer: CTX Mosaic -->
+                        <div class="layer-item">
+                            <div class="layer-header">
+                                <label class="switch">
+                                    <input type="checkbox" id="layer-ctx" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <div class="layer-info">
+                                    <span class="layer-name">MRO CTX Mosaic (Uploaded TIFF)</span>
+                                    <span class="layer-sub">Panchromatic optical satellite imagery (6m/px)</span>
+                                </div>
+                            </div>
+                            <div class="layer-slider-wrap">
+                                <span>Opacity</span>
+                                <input type="range" id="opacity-ctx" min="0" max="100" value="100">
+                            </div>
+                        </div>
+
+                        <!-- Layer: DEM Topography -->
+                        <div class="layer-item">
+                            <div class="layer-header">
+                                <label class="switch">
+                                    <input type="checkbox" id="layer-dem">
+                                    <span class="slider"></span>
+                                </label>
+                                <div class="layer-info">
+                                    <span class="layer-name">Topography / DEM Elevation</span>
+                                    <span class="layer-sub">NASA MOLA/HRSC elevation model (-2600m to -1600m)</span>
+                                </div>
+                            </div>
+                            <div class="layer-slider-wrap">
+                                <span>Opacity</span>
+                                <input type="range" id="opacity-dem" min="0" max="100" value="70">
+                            </div>
+                        </div>
+
+                        <!-- Layer: Horn Slope -->
+                        <div class="layer-item">
+                            <div class="layer-header">
+                                <label class="switch">
+                                    <input type="checkbox" id="layer-slope">
+                                    <span class="slider"></span>
+                                </label>
+                                <div class="layer-info">
+                                    <span class="layer-name">Horn Slope Gradient (° Incline)</span>
+                                    <span class="layer-sub">Green: 0-8° | Yellow: 8-15° | Red: &gt;15°</span>
+                                </div>
+                            </div>
+                            <div class="layer-slider-wrap">
+                                <span>Opacity</span>
+                                <input type="range" id="opacity-slope" min="0" max="100" value="65">
+                            </div>
+                        </div>
+
+                        <!-- Layer: Hazard Mask -->
+                        <div class="layer-item">
+                            <div class="layer-header">
+                                <label class="switch">
+                                    <input type="checkbox" id="layer-hazards" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <div class="layer-info">
+                                    <span class="layer-name">Hazard Assessment Zones</span>
+                                    <span class="layer-sub">High-risk delta cliffs, rim scarps & crater walls</span>
+                                </div>
+                            </div>
+                            <div class="layer-slider-wrap">
+                                <span>Opacity</span>
+                                <input type="range" id="opacity-hazards" min="0" max="100" value="80">
+                            </div>
+                        </div>
+
+                        <!-- Layer: Exploration Landmarks -->
+                        <div class="layer-item">
+                            <div class="layer-header">
+                                <label class="switch">
+                                    <input type="checkbox" id="layer-landmarks" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <div class="layer-info">
+                                    <span class="layer-name">NASA Perseverance Landmarks</span>
+                                    <span class="layer-sub">Touchdown site, delta front, Kodiak butte & craters</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Location Bookmarks -->
+                <div class="panel-section">
+                    <h3 class="section-title">
+                        <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/></svg>
+                        Jezero Crater Landmark Teleport
+                    </h3>
+                    <div class="landmark-quick-grid" id="landmark-buttons">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Hazard Statistics Card -->
+                <div class="panel-section">
+                    <h3 class="section-title">Hazard Distribution (Jezero AOI)</h3>
+                    <div class="hazard-stat-bar">
+                        <div class="bar-seg safe" style="width: 94.8%;" title="Safe (0-8°): 94.8%"></div>
+                        <div class="bar-seg caution" style="width: 4.8%;" title="Caution (8-15°): 4.8%"></div>
+                        <div class="bar-seg high" style="width: 0.4%;" title="High (>15°): 0.4%"></div>
+                    </div>
+                    <div class="hazard-legend-labels">
+                        <span class="leg-item"><span class="dot safe"></span> Safe (0-8°): <strong>94.8%</strong></span>
+                        <span class="leg-item"><span class="dot caution"></span> Caution (8-15°): <strong>4.8%</strong></span>
+                        <span class="leg-item"><span class="dot high"></span> Danger (&gt;15°): <strong>0.4%</strong></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 2: A* Safe Route Planner -->
+            <section id="tab-routing" class="tab-content">
+                <div class="panel-section">
+                    <h3 class="section-title">
+                        <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2L4.5,20.29L5.21,21L12,18L18.79,21L19.5,20.29L12,2Z"/></svg>
+                        Autonomous A* Pathfinding
+                    </h3>
+                    <p class="section-desc">Generate proposed lower-cost exploration corridors avoiding steep delta scarps.</p>
+
+                    <div class="routing-inputs">
+                        <div class="point-input-group">
+                            <label class="point-label">
+                                <span class="marker-chip start">A</span> Start Location:
+                            </label>
+                            <div class="coord-display" id="start-coord-text">Click map or set landmark</div>
+                            <button class="btn btn-secondary btn-sm" id="btn-set-start">Pin Start (A)</button>
+                        </div>
+
+                        <div class="point-input-group">
+                            <label class="point-label">
+                                <span class="marker-chip dest">B</span> Destination:
+                            </label>
+                            <div class="coord-display" id="end-coord-text">Click map or set landmark</div>
+                            <button class="btn btn-secondary btn-sm" id="btn-set-dest">Pin Goal (B)</button>
+                        </div>
+                    </div>
+
+                    <div class="routing-presets">
+                        <span class="preset-label">Recommended Missions:</span>
+                        <button class="btn btn-outline btn-xs" id="preset-mission-1">Landing Site &rarr; Delta Scarp</button>
+                        <button class="btn btn-outline btn-xs" id="preset-mission-2">Delta Base &rarr; Belva Crater</button>
+                        <button class="btn btn-outline btn-xs" id="preset-mission-3">Landing &rarr; Kodiak Butte</button>
+                    </div>
+
+                    <div class="routing-actions">
+                        <button class="btn btn-primary" id="btn-compute-route">
+                            <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M11,6V11H6V13H11V18H13V13H18V11H13V6H11Z"/></svg>
+                            Plan Safe Route (A*)
+                        </button>
+                        <button class="btn btn-secondary" id="btn-clear-route">Clear</button>
+                    </div>
+                </div>
+
+                <!-- Route Result Statistics Card -->
+                <div class="panel-section" id="route-results-card" style="display: none;">
+                    <h3 class="section-title">Route Telemetry & Comparison</h3>
+                    
+                    <div class="result-badge-row">
+                        <span class="badge" id="route-safety-badge">Safe Route</span>
+                        <span class="badge badge-neutral" id="route-waypoints-badge">18 Waypoints</span>
+                    </div>
+
+                    <div class="telemetry-grid">
+                        <div class="telemetry-cell">
+                            <span class="t-label">A* Distance</span>
+                            <span class="t-val" id="r-dist-val">-- km</span>
+                        </div>
+                        <div class="telemetry-cell">
+                            <span class="t-label">Straight Dist</span>
+                            <span class="t-val" id="r-straight-dist">-- km</span>
+                        </div>
+                        <div class="telemetry-cell">
+                            <span class="t-label">Max Slope (A*)</span>
+                            <span class="t-val" id="r-max-slope">--°</span>
+                        </div>
+                        <div class="telemetry-cell">
+                            <span class="t-label">Straight Max</span>
+                            <span class="t-val warning" id="r-straight-slope">--°</span>
+                        </div>
+                        <div class="telemetry-cell">
+                            <span class="t-label">Elevation Gain</span>
+                            <span class="t-val" id="r-elev-gain">-- m</span>
+                        </div>
+                        <div class="telemetry-cell">
+                            <span class="t-label">Elevation Loss</span>
+                            <span class="t-val" id="r-elev-loss">-- m</span>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <span class="chart-title">Elevation Profile Comparison (meters)</span>
+                            <span class="chart-legend">
+                                <span class="leg-key astar">Proposed Route</span>
+                                <span class="leg-key straight">Direct Straight</span>
+                            </span>
+                        </div>
+                        <canvas id="routeProfileChart" width="320" height="150"></canvas>
+                    </div>
+
+                    <p class="scientific-disclaimer">
+                        <strong>Scientific Note:</strong> Proposed lower-cost route computed by A* cost minimization using NASA MOLA/HRSC elevation. In-situ rover cameras required for centimeter-scale boulder hazard validation.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Tab 3: Geographic Inspector -->
+            <section id="tab-inspect" class="tab-content">
+                <div class="panel-section">
+                    <h3 class="section-title">
+                        <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/></svg>
+                        Selected Location Telemetry
+                    </h3>
+                    <p class="section-desc">Click anywhere on the Mars map to query genuine physical properties.</p>
+
+                    <div class="inspector-card" id="inspector-data-box">
+                        <div class="inspect-row">
+                            <span class="i-label">Latitude:</span>
+                            <span class="i-val mono" id="insp-lat">18.444600° N</span>
+                        </div>
+                        <div class="inspect-row">
+                            <span class="i-label">Longitude:</span>
+                            <span class="i-val mono" id="insp-lon">77.450900° E</span>
+                        </div>
+                        <div class="inspect-row">
+                            <span class="i-label">CTX Reflectance (8-bit):</span>
+                            <span class="i-val mono" id="insp-pixel">162 / 255</span>
+                        </div>
+                        <div class="inspect-row">
+                            <span class="i-label">Elevation (MOLA Datum):</span>
+                            <span class="i-val highlight" id="insp-elev">-2,569.75 m</span>
+                        </div>
+                        <div class="inspect-row">
+                            <span class="i-label">Horn Slope Gradient:</span>
+                            <span class="i-val" id="insp-slope">0.18° (Nominal)</span>
+                        </div>
+                        <div class="inspect-row">
+                            <span class="i-label">Hazard Category:</span>
+                            <span class="hazard-badge safe" id="insp-hazard-tier">LOW HAZARD</span>
+                        </div>
+                        <div class="inspect-row block">
+                            <span class="i-label">Rover Mobility Advisory:</span>
+                            <p class="i-text" id="insp-mobility">Nominal transit (approved up to 100 m/hr).</p>
+                        </div>
+                        <div class="inspect-row block">
+                            <span class="i-label">Geological Context:</span>
+                            <p class="i-text" id="insp-desc">Gentle crater floor regolith. Negligible wheel slip risk.</p>
+                        </div>
+                        <div class="inspect-row">
+                            <span class="i-label">Nearest Feature:</span>
+                            <span class="i-val" id="insp-nearest">Perseverance Touchdown (0.0 km)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 4: TIFF Dataset Metadata -->
+            <section id="tab-metadata" class="tab-content">
+                <div class="panel-section">
+                    <h3 class="section-title">Forensic GeoTIFF Metadata</h3>
+                    <p class="section-desc">Extracted directly from binary headers of the uploaded file.</p>
+
+                    <div class="metadata-table">
+                        <div class="m-row"><span class="m-key">Source File:</span><span class="m-val mono">JEZ_ctx_B_soc_008_orthoMosaic_6m_Eqc_latTs0_lon0.tif</span></div>
+                        <div class="m-row"><span class="m-key">Format:</span><span class="m-val">GeoTIFF (Standard TIFF v42)</span></div>
+                        <div class="m-row"><span class="m-key">File Size:</span><span class="m-val">34.59 MB (36,269,402 bytes)</span></div>
+                        <div class="m-row"><span class="m-key">Dimensions:</span><span class="m-val mono">5,322 &times; 5,040 pixels</span></div>
+                        <div class="m-row"><span class="m-key">Total Pixels:</span><span class="m-val">26,822,880 pixels</span></div>
+                        <div class="m-row"><span class="m-key">Pixel Resolution:</span><span class="m-val highlight">6.000 m / pixel</span></div>
+                        <div class="m-row"><span class="m-key">CRS:</span><span class="m-val">Equirectangular Mars 2000 Sphere</span></div>
+                        <div class="m-row"><span class="m-key">Mars Radius:</span><span class="m-val">3,396,190.0 meters</span></div>
+                        <div class="m-row"><span class="m-key">Lon Bounds:</span><span class="m-val mono">77.1605° E to 77.6992° E</span></div>
+                        <div class="m-row"><span class="m-key">Lat Bounds:</span><span class="m-val mono">18.2110° N to 18.7212° N</span></div>
+                        <div class="m-row"><span class="m-key">Ground AOI:</span><span class="m-val">31.93 km &times; 30.24 km (965.6 km²)</span></div>
+                        <div class="m-row"><span class="m-key">Band Data Type:</span><span class="m-val">uint8 (0 - 255)</span></div>
+                        <div class="m-row"><span class="m-key">NoData Value:</span><span class="m-val">0 (100% valid interior)</span></div>
+                        <div class="m-row"><span class="m-key">NASA Instrument:</span><span class="m-val">MRO Context Camera (CTX)</span></div>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <!-- Right Interactive Map Display -->
+        <section class="map-viewport">
+            <div id="mars-map"></div>
+
+            <!-- Floating Map Coordinates HUD -->
+            <div class="map-overlay-hud">
+                <div class="hud-item">
+                    <span class="hud-label">LATITUDE</span>
+                    <span class="hud-val mono" id="hud-lat">18.444600° N</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">LONGITUDE</span>
+                    <span class="hud-val mono" id="hud-lon">77.450900° E</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">SCALE</span>
+                    <span class="hud-val">6 m/px</span>
+                </div>
+            </div>
+
+            <!-- Floating Map Legend Overlay -->
+            <div class="map-legend-card" id="map-legend">
+                <div class="legend-header">MAP LEGEND</div>
+                <div class="legend-content">
+                    <div class="leg-group">
+                        <span class="leg-title">Hazard Class:</span>
+                        <div class="leg-entry"><span class="color-box safe"></span> Low Hazard (0-8°)</div>
+                        <div class="leg-entry"><span class="color-box caution"></span> Medium Hazard (8-15°)</div>
+                        <div class="leg-entry"><span class="color-box high"></span> High Hazard (&gt;15°)</div>
+                    </div>
+                    <div class="leg-group">
+                        <span class="leg-title">Topography (MOLA Datum):</span>
+                        <div class="elev-gradient-bar"></div>
+                        <div class="elev-labels">
+                            <span>-2600m</span>
+                            <span>-2100m</span>
+                            <span>-1600m</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Modular Application JS -->
+    <script src="/static/js/layers.js"></script>
+    <script src="/static/js/analysis.js"></script>
+    <script src="/static/js/routing.js"></script>
+    <script src="/static/js/map.js"></script>
+</body>
+</html>
