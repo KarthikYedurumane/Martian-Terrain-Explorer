@@ -96,16 +96,19 @@ http://127.0.0.1:5000
 
 ---
 
-## 5. Team of Six Members: Suggested Work Distribution
+## 5. Team HexaTechForce: Work Distribution
 
-| Role # | Member Role | Primary Responsibilities |
+**Team Name**: **HexaTechForce**  
+**Institution**: Jawaharlal Nehru National College of Engineering (JNNCE)
+
+| Member | Assigned Role | Primary Responsibilities |
 | :--- | :--- | :--- |
-| **1** | **NASA Data & GIS Lead** | Forensic binary TIFF inspection, CRS validation, GeoTIFF IFD extraction, MOLA/HRSC datum alignment. |
-| **2** | **Frontend & UI/UX Designer** | Dark aerospace HUD design, telemetry panels, responsive CSS, typography, icon styling. |
-| **3** | **Interactive WebGIS Developer** | Leaflet.js map integration, image overlays, opacity controls, custom projection handling. |
-| **4** | **Terrain Analysis & Hazard Engineer** | Horn slope algorithm, 2D gradient matrices, rover safety threshold categorization ($0-8^\circ, 8-15^\circ, >15^\circ$). |
-| **5** | **Pathfinding & Algorithm Scientist** | A* pathfinding implementation on 8-connected grid, movement cost formulation, elevation profile generation. |
-| **6** | **Backend Integration & QA Lead** | Flask REST API endpoints, automated unit test suite, performance optimization, academic documentation. |
+| **Karthik Y P** | **Project Lead & System Architect** | Overall architecture, Flask backend integration, cloud deployment to Render, Git versioning, and project management. |
+| **Deekshith S Kuppal** | **NASA Data & GIS Lead** | Forensic binary TIFF inspection, CRS validation, GeoTIFF IFD extraction, MOLA/HRSC datum alignment. |
+| **Amay Dinesh** | **Frontend & UI/UX Designer** | Dark aerospace HUD design, telemetry panels, responsive CSS, typography, icon styling. |
+| **Ichith M** | **Interactive WebGIS Developer** | Leaflet.js map integration, image overlays, opacity controls, custom projection handling. |
+| **Amrutha** | **Terrain Analysis & Hazard Engineer** | Horn slope algorithm, 2D gradient matrices, rover safety threshold categorization (0-8°, 8-15°, >15°). |
+| **Chaitra B** | **Pathfinding & Algorithm Scientist** | A* pathfinding implementation on 8-connected grid, movement cost formulation, elevation profile generation. |
 
 ---
 

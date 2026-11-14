@@ -2,6 +2,8 @@
 Martian Terrain Explorer - Academic Report Generator
 Generates a formal, comprehensive college-level Microsoft Word (.docx) project report
 for the NASA Space Apps Challenge 2026.
+Team: HexaTechForce
+Members: Deekshith S Kuppal, Amay Dinesh, Karthik Y P, Ichith M, Amrutha, Chaitra B
 """
 
 import os
@@ -59,8 +61,8 @@ def create_report():
     # -------------------------------------------------------------
     title_p = doc.add_paragraph()
     title_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    title_p.paragraph_format.space_before = Pt(36)
-    title_p.paragraph_format.space_after = Pt(12)
+    title_p.paragraph_format.space_before = Pt(24)
+    title_p.paragraph_format.space_after = Pt(8)
     run_agency = title_p.add_run("NASA SPACE APPS CHALLENGE 2026\nACADEMIC PROJECT REPORT\n\n")
     run_agency.font.name = 'Arial'
     run_agency.font.size = Pt(14)
@@ -69,18 +71,18 @@ def create_report():
 
     run_title = title_p.add_run("MARTIAN TERRAIN EXPLORER\n")
     run_title.font.name = 'Arial'
-    run_title.font.size = Pt(24)
+    run_title.font.size = Pt(22)
     run_title.font.bold = True
     run_title.font.color.rgb = COLOR_SECONDARY
 
     run_sub = title_p.add_run("Interactive Mars Mapping, Hazard Assessment and Safe Route Planning System\n")
     run_sub.font.name = 'Arial'
-    run_sub.font.size = Pt(14)
+    run_sub.font.size = Pt(13)
     run_sub.font.color.rgb = COLOR_DARK
 
     run_tag = title_p.add_run("Explore Mars. Understand Terrain. Plan Safer Routes.\n\n")
     run_tag.font.name = 'Calibri'
-    run_tag.font.size = Pt(12)
+    run_tag.font.size = Pt(11)
     run_tag.font.italic = True
     run_tag.font.color.rgb = COLOR_MUTED
 
@@ -88,31 +90,59 @@ def create_report():
     badge_table = doc.add_table(rows=1, cols=1)
     badge_table.alignment = WD_TABLE_ALIGNMENT.CENTER
     cell = badge_table.rows[0].cells[0]
-    cell.width = Inches(5.5)
+    cell.width = Inches(5.8)
     set_cell_background(cell, "F1F5F9")
-    set_cell_margins(cell, 150, 150, 200, 200)
+    set_cell_margins(cell, 120, 120, 160, 160)
     bp = cell.paragraphs[0]
     bp.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    brun = bp.add_run("Primary Study Area: Jezero Crater, Mars (NASA Perseverance Exploration Corridor)\nDataset: MRO Context Camera (CTX) 6.0 m/px Panchromatic Orthomosaic\nElevation Reference: NASA MOLA / HRSC Topographic Datum")
-    brun.font.size = Pt(10)
+    brun = bp.add_run("Study Area: Jezero Crater, Mars (NASA Perseverance Exploration Corridor)\nDataset: MRO Context Camera (CTX) 6.0 m/px Panchromatic Orthomosaic\nElevation Reference: NASA MOLA / HRSC Topographic Datum")
+    brun.font.size = Pt(9.5)
     brun.font.color.rgb = COLOR_PRIMARY
 
-    # Metadata Block
+    # Team & Metadata Block
+    doc.add_paragraph()
+    team_table = doc.add_table(rows=8, cols=2)
+    team_table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    
+    # Header row for Team
+    cell_h1, cell_h2 = team_table.rows[0].cells
+    set_cell_background(cell_h1, "0B3D91")
+    set_cell_background(cell_h2, "0B3D91")
+    set_cell_margins(cell_h1, 80, 80, 120, 120)
+    set_cell_margins(cell_h2, 80, 80, 120, 120)
+    rh1 = cell_h1.paragraphs[0].add_run("Team Name: HexaTechForce")
+    rh1.bold = True
+    rh1.font.color.rgb = RGBColor(255, 255, 255)
+    rh2 = cell_h2.paragraphs[0].add_run("Project Roles & Responsibilities")
+    rh2.bold = True
+    rh2.font.color.rgb = RGBColor(255, 255, 255)
+
+    team_members_data = [
+        ("Karthik Y P", "Project Lead, Full-Stack Integration & Architecture (karthikyp@jnnce.ac.in)"),
+        ("Deekshith S Kuppal", "NASA Data Collection, GIS Preprocessing & Binary Georeferencing"),
+        ("Amay Dinesh", "Frontend & UI/UX Designer, Mission HUD Cockpit Styling"),
+        ("Ichith M", "Interactive WebGIS & Multi-Layer Raster Integration (Leaflet.js)"),
+        ("Amrutha", "Terrain Analysis & Rover Hazard Assessment Engineering"),
+        ("Chaitra B", "A* Pathfinding Algorithms & Autonomous Route Planning Specialist"),
+        ("Institution", "Jawaharlal Nehru National College of Engineering (JNNCE)")
+    ]
+
+    for idx, (m_name, m_role) in enumerate(team_members_data, start=1):
+        c1, c2 = team_table.rows[idx].cells
+        if idx % 2 == 1:
+            set_cell_background(c1, "F8FAFC")
+            set_cell_background(c2, "F8FAFC")
+        set_cell_margins(c1, 60, 60, 100, 100)
+        set_cell_margins(c2, 60, 60, 100, 100)
+        c1.paragraphs[0].add_run(m_name).bold = True
+        c2.paragraphs[0].add_run(m_role)
+
     doc.add_paragraph()
     meta_p = doc.add_paragraph()
     meta_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    meta_p.paragraph_format.space_before = Pt(48)
-    
-    mrun = meta_p.add_run("Project Lead & Author: Karthik Yedurumane\n")
-    mrun.bold = True
-    mrun.font.size = Pt(12)
-    meta_p.add_run("Institution: Jawaharlal Nehru National College of Engineering (JNNCE)\nEmail: karthikyp@jnnce.ac.in\n\n")
-    
-    url_run = meta_p.add_run("Live Deployed Web Application:\nhttps://martian-terrain-explorer.onrender.com/\n\nGitHub Repository:\nhttps://github.com/KarthikYedurumane/Martian-Terrain-Explorer\n\n")
-    url_run.font.size = Pt(10)
+    url_run = meta_p.add_run("Live Deployed Web Application:\nhttps://martian-terrain-explorer.onrender.com/\n\nGitHub Repository:\nhttps://github.com/KarthikYedurumane/Martian-Terrain-Explorer\n\nDate: November 2026")
+    url_run.font.size = Pt(9.5)
     url_run.font.color.rgb = COLOR_PRIMARY
-
-    meta_p.add_run("Submission Date: November 2026")
 
     doc.add_page_break()
 
@@ -121,24 +151,24 @@ def create_report():
     # -------------------------------------------------------------
     def add_h1(text):
         h = doc.add_paragraph()
-        h.paragraph_format.space_before = Pt(18)
-        h.paragraph_format.space_after = Pt(6)
+        h.paragraph_format.space_before = Pt(16)
+        h.paragraph_format.space_after = Pt(5)
         h.paragraph_format.keep_with_next = True
         run = h.add_run(text)
         run.font.name = 'Arial'
-        run.font.size = Pt(16)
+        run.font.size = Pt(15)
         run.font.bold = True
         run.font.color.rgb = COLOR_PRIMARY
         return h
 
     def add_h2(text):
         h = doc.add_paragraph()
-        h.paragraph_format.space_before = Pt(12)
-        h.paragraph_format.space_after = Pt(4)
+        h.paragraph_format.space_before = Pt(11)
+        h.paragraph_format.space_after = Pt(3)
         h.paragraph_format.keep_with_next = True
         run = h.add_run(text)
         run.font.name = 'Arial'
-        run.font.size = Pt(13)
+        run.font.size = Pt(12.5)
         run.font.bold = True
         run.font.color.rgb = COLOR_SECONDARY
         return h
@@ -154,14 +184,14 @@ def create_report():
         "8. Data Preprocessing Methodology", "9. Algorithms Used",
         "10. Implementation & Module Breakdown", "11. Testing & Quality Assurance",
         "12. Results & Telemetry Analysis", "13. Advantages", "14. Limitations",
-        "15. Future Enhancements", "16. Work Distribution (Team of Six Members)",
+        "15. Future Enhancements", "16. Work Distribution (Team HexaTechForce)",
         "17. Conclusion", "18. References"
     ]
     for item in toc_items:
         p = doc.add_paragraph()
         p.paragraph_format.space_after = Pt(2)
         r = p.add_run(item)
-        r.font.size = Pt(10.5)
+        r.font.size = Pt(10)
 
     doc.add_page_break()
 
@@ -170,17 +200,20 @@ def create_report():
     # -------------------------------------------------------------
     add_h1("1. ABSTRACT")
     p = doc.add_paragraph()
-    p.add_run("Future human and robotic exploration of Mars necessitates navigating unfamiliar, hazardous extraterrestrial terrains while optimizing traverse safety and energy efficiency. Planetary imagery and elevation models are typically distributed across disparate NASA missions, often formatted in specialized planetary coordinate reference systems that general web applications cannot parse. This project develops the ")
-    r = p.add_run("Martian Terrain Explorer")
-    r.bold = True
-    p.add_run(", a comprehensive, full-stack geospatial WebGIS platform powered directly by an authentic NASA Mars Reconnaissance Orbiter (MRO) Context Camera (CTX) GeoTIFF dataset (6.0 meters/pixel resolution) covering the Jezero Crater exploration corridor.\n\nBy fusing optical satellite imagery with calibrated NASA Mars Orbiter Laser Altimeter (MOLA) and High Resolution Stereo Camera (HRSC) elevation models, the system calculates 2D Horn slope gradients, classifies rover traversability hazards into four standard engineering tiers (0–8° Low, 8–15° Caution, >15° High, >25° Critical Impassable), and executes an autonomous A* pathfinding algorithm with dynamic slope penalty functions. The resulting application enables scientists and rover operators to inspect physical terrain properties anywhere within a 965.6 km² footprint, visualize interactive data layers, and generate lower-cost, obstacle-avoiding traverses with real-time elevation profile comparisons.")
+    p.add_run("Future human and robotic exploration of Mars necessitates navigating unfamiliar, hazardous extraterrestrial terrains while optimizing traverse safety and energy efficiency. Planetary imagery and elevation models are typically distributed across disparate NASA missions, often formatted in specialized planetary coordinate reference systems that general web applications cannot parse. Developed by Team ")
+    r_team = p.add_run("HexaTechForce")
+    r_team.bold = True
+    p.add_run(", the ")
+    r_proj = p.add_run("Martian Terrain Explorer")
+    r_proj.bold = True
+    p.add_run(" is an interactive, full-stack geospatial WebGIS platform powered directly by an authentic NASA Mars Reconnaissance Orbiter (MRO) Context Camera (CTX) GeoTIFF dataset (6.0 meters/pixel resolution) covering the Jezero Crater exploration corridor.\n\nBy fusing optical satellite imagery with calibrated NASA Mars Orbiter Laser Altimeter (MOLA) and High Resolution Stereo Camera (HRSC) elevation models, the system calculates 2D Horn slope gradients, classifies rover traversability hazards into four standard engineering tiers (0–8° Low, 8–15° Caution, >15° High, >25° Critical Impassable), and executes an autonomous A* pathfinding algorithm with dynamic slope penalty functions. The resulting application enables scientists and rover operators to inspect physical terrain properties anywhere within a 965.6 km² footprint, visualize interactive data layers, and generate lower-cost, obstacle-avoiding traverses with real-time elevation profile comparisons.")
 
     # -------------------------------------------------------------
     # 2. INTRODUCTION
     # -------------------------------------------------------------
     add_h1("2. INTRODUCTION")
     doc.add_paragraph("Robotic rovers such as NASA's Mars 2020 Perseverance operate in extreme Martian environments where wheel slippage, steep cliff scarps, and boulder fields can cause mission-ending rollover events or severe mechanical wear. Jezero Crater is a premier astrobiological target featuring ancient lacustrine sediments, an excavated river delta, and rim relief exceeding 900 meters.")
-    doc.add_paragraph("However, mission planners and planetary researchers face a fundamental technical challenge: reconciling sub-decameter optical satellite reflectance with 3D topographic relief. Standard GIS desktop software (such as QGIS or ArcGIS Pro) requires specialized GIS training, heavyweight workstation installations, and proprietary configurations. This application bridges that gap by offering a streamlined, browser-accessible WebGIS cockpit designed for Windows 11 and cloud-hosted environments.")
+    doc.add_paragraph("However, mission planners and planetary researchers face a fundamental technical challenge: reconciling sub-decameter optical satellite reflectance with 3D topographic relief. Team HexaTechForce developed this application to bridge that gap by offering a streamlined, browser-accessible WebGIS cockpit designed for Windows 11 and cloud-hosted environments.")
 
     # -------------------------------------------------------------
     # 3. PROBLEM STATEMENT
@@ -210,7 +243,7 @@ def create_report():
         "Categorize rover hazards into standardized mobility tiers and detect geological escarpments (such as the Western Delta Front scarp and Kodiak Butte).",
         "Construct an A* autonomous pathfinding engine on an 8-connected cost grid that penalizes slope and forbids traversal over slopes > 25°.",
         "Build an aerospace-grade dark dashboard interface with Leaflet.js, HUD telemetry, and interactive canvas elevation profiles.",
-        "Deploy the system to a publicly accessible production cloud environment."
+        "Deploy the system to a publicly accessible production cloud environment (https://martian-terrain-explorer.onrender.com/)."
     ]
     for obj in objectives:
         doc.add_paragraph(obj, style='List Bullet')
@@ -230,7 +263,7 @@ def create_report():
         r = p.add_run(h)
         r.bold = True
         r.font.color.rgb = RGBColor(255, 255, 255)
-        set_cell_margins(cell, 120, 120, 120, 120)
+        set_cell_margins(cell, 100, 100, 120, 120)
 
     rows_data = [
         ("Data Foundation", "Generic Earth basemaps or mock images", "Actual NASA MRO CTX GeoTIFF (6m/px)"),
@@ -244,7 +277,7 @@ def create_report():
             cell = table.rows[row_idx].cells[col_idx]
             if row_idx % 2 == 1:
                 set_cell_background(cell, "F8FAFC")
-            set_cell_margins(cell, 80, 80, 100, 100)
+            set_cell_margins(cell, 70, 70, 100, 100)
             cell.paragraphs[0].add_run(text)
 
     # -------------------------------------------------------------
@@ -279,7 +312,7 @@ def create_report():
         r = p.add_run(h)
         r.bold = True
         r.font.color.rgb = RGBColor(255, 255, 255)
-        set_cell_margins(cell, 100, 100, 120, 120)
+        set_cell_margins(cell, 90, 90, 120, 120)
 
     dataset_specs = [
         ("Filename", "JEZ_ctx_B_soc_008_orthoMosaic_6m_Eqc_latTs0_lon0 (1).tif"),
@@ -302,8 +335,8 @@ def create_report():
         if row_idx % 2 == 1:
             set_cell_background(cell_k, "F8FAFC")
             set_cell_background(cell_v, "F8FAFC")
-        set_cell_margins(cell_k, 60, 60, 100, 100)
-        set_cell_margins(cell_v, 60, 60, 100, 100)
+        set_cell_margins(cell_k, 50, 50, 100, 100)
+        set_cell_margins(cell_v, 50, 50, 100, 100)
         cell_k.paragraphs[0].add_run(k).bold = True
         cell_v.paragraphs[0].add_run(v)
 
@@ -313,7 +346,7 @@ def create_report():
     # 8. DATA PREPROCESSING METHODOLOGY
     # -------------------------------------------------------------
     add_h1("8. DATA PREPROCESSING METHODOLOGY")
-    doc.add_paragraph("The original 35 MB GeoTIFF contains 26.8 million pixels. Directly serving this file in web browsers leads to extreme DOM latency and memory overload. The preprocessing pipeline solves this through:")
+    doc.add_paragraph("The original 35 MB GeoTIFF contains 26.8 million pixels. Directly serving this file in web browsers leads to extreme DOM latency and memory overload. Team HexaTechForce's pipeline solves this through:")
     
     prep_steps = [
         ("Binary Tag Preservation: ", "Reads binary IFD tags directly (ModelPixelScaleTag 33550, ModelTiepointTag 33922, GeoKeyDirectoryTag 34735) without modifying the original dataset file."),
@@ -375,7 +408,7 @@ def create_report():
         r = p.add_run(h)
         r.bold = True
         r.font.color.rgb = RGBColor(255, 255, 255)
-        set_cell_margins(cell, 100, 100, 120, 120)
+        set_cell_margins(cell, 90, 90, 120, 120)
 
     tests_summary = [
         ("tests/test_georeference.py", "Dimensions (5322x5040), Scale (6m), Mars Datum (3396190m), Landing Site Coordinates", "PASSED (6/6)"),
@@ -389,9 +422,9 @@ def create_report():
             set_cell_background(c1, "F8FAFC")
             set_cell_background(c2, "F8FAFC")
             set_cell_background(c3, "F8FAFC")
-        set_cell_margins(c1, 60, 60, 100, 100)
-        set_cell_margins(c2, 60, 60, 100, 100)
-        set_cell_margins(c3, 60, 60, 100, 100)
+        set_cell_margins(c1, 50, 50, 100, 100)
+        set_cell_margins(c2, 50, 50, 100, 100)
+        set_cell_margins(c3, 50, 50, 100, 100)
         c1.paragraphs[0].add_run(mod).bold = True
         c2.paragraphs[0].add_run(desc)
         r_res = c3.paragraphs[0].add_run(res)
@@ -418,7 +451,7 @@ def create_report():
         r = p.add_run(h)
         r.bold = True
         r.font.color.rgb = RGBColor(255, 255, 255)
-        set_cell_margins(cell, 100, 100, 120, 120)
+        set_cell_margins(cell, 90, 90, 120, 120)
 
     comparison_data = [
         ("Total Traverse Distance", "3.77 km", "3.75 km"),
@@ -434,9 +467,9 @@ def create_report():
             set_cell_background(c1, "F8FAFC")
             set_cell_background(c2, "F8FAFC")
             set_cell_background(c3, "F8FAFC")
-        set_cell_margins(c1, 60, 60, 100, 100)
-        set_cell_margins(c2, 60, 60, 100, 100)
-        set_cell_margins(c3, 60, 60, 100, 100)
+        set_cell_margins(c1, 50, 50, 100, 100)
+        set_cell_margins(c2, 50, 50, 100, 100)
+        set_cell_margins(c3, 50, 50, 100, 100)
         c1.paragraphs[0].add_run(m).bold = True
         c2.paragraphs[0].add_run(a)
         c3.paragraphs[0].add_run(s)
@@ -491,20 +524,22 @@ def create_report():
         doc.add_paragraph(enh, style='List Bullet')
 
     # -------------------------------------------------------------
-    # 16. WORK DISTRIBUTION (TEAM OF SIX MEMBERS)
+    # 16. WORK DISTRIBUTION (TEAM HEXATECHFORCE)
     # -------------------------------------------------------------
-    add_h1("16. WORK DISTRIBUTION (TEAM OF SIX MEMBERS)")
+    add_h1("16. WORK DISTRIBUTION (TEAM HEXATECHFORCE)")
+    doc.add_paragraph("The technical responsibilities and project execution were partitioned across the six members of Team HexaTechForce:")
+
     team_roles = [
-        ("Member 1: NASA Data & GIS Preprocessing Lead", "Handled forensic binary TIFF inspection, coordinate reference system validation, and MOLA/HRSC datum alignment."),
-        ("Member 2: Frontend & UI/UX Designer", "Designed the dark aerospace HUD cockpit, mission badges, typography, and responsive CSS layout."),
-        ("Member 3: Interactive WebGIS Developer", "Integrated Leaflet.js, custom projection bounds, multi-layer toggles, and opacity sliders."),
-        ("Member 4: Terrain Analysis & Hazard Engineer", "Formulated the Horn 2D slope algorithm, elevation profiling, and safety tier thresholds."),
-        ("Member 5: Pathfinding & Algorithm Scientist", "Implemented the A* pathfinding engine on the 8-connected grid with slope cost penalties."),
-        ("Member 6: Backend Integration & QA Lead", "Engineered Flask REST endpoints, wrote the 12-test automated suite, and prepared project documentation.")
+        ("Karthik Y P (Project Lead & System Architect)", "Led system design, architectural integration between Flask backend and Leaflet frontend, git versioning, cloud deployment to Render, and academic reporting."),
+        ("Deekshith S Kuppal (NASA Data Collection & GIS Lead)", "Conducted forensic binary TIFF inspection, validated CRS and GeoTIFF IFD tags, and ensured NASA MOLA/HRSC datum alignment."),
+        ("Amay Dinesh (Frontend & UI/UX Designer)", "Designed the aerospace dark cockpit layout, typography (Orbitron & Rajdhani), telemetry HUD styling, and responsive CSS grid components."),
+        ("Ichith M (Interactive WebGIS & Map Integration)", "Integrated Leaflet.js custom coordinate systems, image overlays, slippy tile rendering, and multi-layer opacity slider controls."),
+        ("Amrutha (Terrain Analysis & Hazard Assessment Engineer)", "Formulated the Horn 2D slope finite-difference algorithm, synthesized topographic relief models, and defined rover mobility hazard tiers."),
+        ("Chaitra B (Route Planning & Algorithms Specialist)", "Implemented the A* autonomous pathfinding engine on the 8-connected cost grid, designed slope penalty equations, and verified the 12-test automated unit suite.")
     ]
     for role, desc in team_roles:
         p = doc.add_paragraph(style='List Bullet')
-        r = p.add_run(role + " — ")
+        r = p.add_run(role + ": ")
         r.bold = True
         p.add_run(desc)
 
@@ -512,7 +547,7 @@ def create_report():
     # 17. CONCLUSION
     # -------------------------------------------------------------
     add_h1("17. CONCLUSION")
-    doc.add_paragraph("The Martian Terrain Explorer successfully proves that modern open-source web technologies and Python geospatial algorithms can be fused to build an authentic, mission-grade planetary exploration platform. By respecting the actual binary properties of the uploaded NASA CTX GeoTIFF, preserving its planetary georeferencing, and pairing it with calibrated elevation data and A* pathfinding, the project delivers a mathematically grounded, visually captivating, and production-deployed submission for the NASA Space Apps Challenge 2026.")
+    doc.add_paragraph("The Martian Terrain Explorer successfully proves that modern open-source web technologies and Python geospatial algorithms can be fused to build an authentic, mission-grade planetary exploration platform. By respecting the actual binary properties of the uploaded NASA CTX GeoTIFF, preserving its planetary georeferencing, and pairing it with calibrated elevation data and A* pathfinding, Team HexaTechForce delivers a mathematically grounded, visually captivating, and production-deployed submission for the NASA Space Apps Challenge 2026.")
 
     # -------------------------------------------------------------
     # 18. REFERENCES

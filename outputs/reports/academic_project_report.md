@@ -1,7 +1,14 @@
-# Academic Project Report
-## Martian Terrain Explorer: Interactive Mars Mapping, Hazard Assessment & Safe Route Planning System
-
 **Project Submission**: NASA Space Apps Challenge 2026  
+**Team Name**: **HexaTechForce**  
+**Team Members**: 
+- **Deekshith S Kuppal** (NASA Data Collection & GIS Preprocessing Lead)
+- **Amay Dinesh** (Frontend & UI/UX Designer)
+- **Karthik Y P** (Project Lead, System Architect & Full-Stack Engineer)
+- **Ichith M** (Interactive WebGIS & Map Integration)
+- **Amrutha** (Terrain Analysis & Hazard Assessment Engineer)
+- **Chaitra B** (A* Pathfinding Algorithms & Autonomous Route Planning Specialist)
+
+**Institution**: Jawaharlal Nehru National College of Engineering (JNNCE)  
 **Domain**: Planetary Science, Geospatial Information Systems (GIS), Robotics Autonomous Navigation  
 **Target Study Area**: Jezero Crater, Mars ($18.38^\circ\text{ N}, 77.58^\circ\text{ E}$)
 
@@ -192,8 +199,19 @@ The application includes an automated test suite with **12 comprehensive unit te
 
 ---
 
+### 16. Work Distribution (Team HexaTechForce)
+The technical responsibilities and project execution were partitioned across the six members of Team HexaTechForce:
+- **Karthik Y P (Project Lead & System Architect)**: Led system design, architectural integration between Flask backend and Leaflet frontend, git versioning, cloud deployment to Render, and academic reporting.
+- **Deekshith S Kuppal (NASA Data Collection & GIS Lead)**: Conducted forensic binary TIFF inspection, validated CRS and GeoTIFF IFD tags, and ensured NASA MOLA/HRSC datum alignment.
+- **Amay Dinesh (Frontend & UI/UX Designer)**: Designed the aerospace dark cockpit layout, typography (Orbitron & Rajdhani), telemetry HUD styling, and responsive CSS grid components.
+- **Ichith M (Interactive WebGIS & Map Integration)**: Integrated Leaflet.js custom coordinate systems, image overlays, slippy tile rendering, and multi-layer opacity slider controls.
+- **Amrutha (Terrain Analysis & Hazard Assessment Engineer)**: Formulated the Horn 2D slope finite-difference algorithm, synthesized topographic relief models, and defined rover mobility hazard tiers.
+- **Chaitra B (Route Planning & Algorithms Specialist)**: Implemented the A* autonomous pathfinding engine on the 8-connected cost grid, designed slope penalty equations, and verified the 12-test automated unit suite.
+
+---
+
 ### 17. Conclusion
-The **Martian Terrain Explorer** successfully demonstrates that standard, open-source web technologies and Python geospatial algorithms can be combined to build an authentic, mission-capable planetary exploration system. By respecting the physical nature of the uploaded NASA CTX GeoTIFF, preserving its georeferencing, and pairing it with calibrated elevation data and $A^*$ pathfinding, the project delivers a compelling, academically rigorous solution for the NASA Space Apps Challenge 2026.
+The **Martian Terrain Explorer** successfully demonstrates that standard, open-source web technologies and Python geospatial algorithms can be combined to build an authentic, mission-capable planetary exploration system. By respecting the physical nature of the uploaded NASA CTX GeoTIFF, preserving its georeferencing, and pairing it with calibrated elevation data and $A^*$ pathfinding, Team HexaTechForce delivers a compelling, academically rigorous solution for the NASA Space Apps Challenge 2026.
 
 ---
 
